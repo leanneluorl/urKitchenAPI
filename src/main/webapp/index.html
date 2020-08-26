@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="eng">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ur Kitchen</title>
+<link rel="stylesheet" href="Main-page.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	
+<script type="text/javascript" src="Recipe.js"></script>  
+<script src="https://code.jquery.com/jquery-3.2.1.min.js">
+		
+		
+		function createCORSRequest(method, url) {
+		  var xhr = new XMLHttpRequest();
+		  if ("withCredentials" in xhr) {
+
+			// Check if the XMLHttpRequest object has a "withCredentials" property.
+			// "withCredentials" only exists on XMLHTTPRequest2 objects.
+			xhr.open(method, url, true);
+
+		  } else if (typeof XDomainRequest != "undefined") {
+
+			// Otherwise, check if XDomainRequest.
+			// XDomainRequest only exists in IE, and is IE's way of making CORS requests.
+			xhr = new XDomainRequest();
+			xhr.open(method, url);
+
+		  } else {
+
+			// Otherwise, CORS is not supported by the browser.
+			xhr = null;
+
+		  }
+		  return xhr;
+			}
+
+			var xhr = createCORSRequest('GET', url);
+			if (!xhr) {
+			  throw new Error('CORS not supported');
+			}
+	</script>
+	
+	<script  type="text/javascript">
+					function load_userLoginPage(){
+						$("#page").load("User-Login.html");
+						}
+					function load_recipePage(){
+						$("#page").load("Recipe.html");
+						}
+					function load_userPage(){
+						$("#page").load("User-functions.html");
+						}
+					function load_urStockLoginPage(){
+						$("#page").load("User-US-Login.html");
+						}
+					function load_rummageLoginPage(){
+						$("#page").load("User-RMM-Login.html");
+						}
+					function load_UrStockPage(){
+						$("#page").load("UrStock.html");
+						}
+					function load_RummagePage(){
+						$("#page").load("Rummage.html");
+						}
+					function load_UrTablePage(){
+						$("#page").load("UrTable.html");
+						}
+					
+	</script>
+</head>
+
+<body>
+	<div id="menu">
+			<div class="menu_row" onclick="load_userLoginPage();">
+				<div class="menu_Button"><img src="image/UrImage_Account.png" alt=""/></div>
+				<div id="account" class="menu_title">Log in</div>
+			</div>
+			<div class="menu_row" onclick="load_recipePage();">
+				<div class="menu_Button"><img src="image/UrImage_Recipe.png" alt=""/></div>
+				<div class="menu_title">Recipe</div>
+			</div>
+			<div class="menu_row" onclick="load_urStockLoginPage();">
+					<div class="menu_Button"><img src="image/UrImage_UrStock.png" alt=""/></div>
+					<div class="menu_title">Ur Stock</div>
+				</div>
+			<div class="menu_row" onclick="load_rummageLoginPage();">
+					<div class="menu_Button"><img src="image/UrImage_Rummage.png" alt=""/></div>
+					<div class="menu_title">Rummage</div>
+				</div>
+			<div class="menu_row" onclick="load_UrTablePage();">
+					<div class="menu_Button"><img src="image/UrImage_UrTable.png" alt=""/></div>
+					<div class="menu_title">Ur Table</div>
+				</div>
+	</div>
+	
+	<div id="main">
+		<div id="ctn-1">
+			<img id="head" src="image/UrKitchen_Head.png" alt=""/> 
+		</div>
+		
+		<div id="yellow">
+			 <div class="search-container">
+				<form action="/action_page.php">
+				  <input type="text" placeholder="Search Recipe..." id="searchRecipe">
+				  <button type="button" onclick="searchRecipes();"><i class="fa fa-search"></i></button>
+				</form>
+			 </div>
+		</div>
+	</div>
+	<div id="page">
+		<section id="catalog" class="cursor">
+			<h1 class="Head1">TOP popular Recipe Catalog</h1>
+			<div class="margin" id="catalog_container">
+				<div class="cat_50 cursor" style="background-image: url('image/Taiwanese.jpg');" onclick="load_recipeByCatalog('Cuisine',3);"></div>
+				<div class="cat_50">
+					<div class="cat_right-Top cursor" style="background-image: url('image/vegan.jpg');" onclick="load_recipeByCatalog('DietType',3);"></div>
+					<div class="cat_right-Top cursor" style="background-image: url('image/keto-FTR.jpg');" onclick="load_recipeByCatalog('DietType',3);"></div>
+					<div class="cat_right-buttom cursor" style="background-image: url('image/Italian_food.jpg');" onclick="load_recipeByCatalog('Cuisine',2);"><div class="centered cat_font">Italian Cuisine</div></div>
+				</div>
+			</div>
+		</section>
+		<section id="POP_recipe">
+			<h2 class="Head2">Popular Recipes</h2>
+			<div class="margin POP_recipe_box">
+				<script>
+					$( document ).ready(function() {
+						showPOPrecipe("ALL","VIEWTIMES","desc");
+					});
+				</script>
+				<div class="recipes">
+					<div class="recipe_title">Title</div>
+					<div class="recipe_image" style="background-image: url('image/test.jpg');"></div>
+				</div>
+				<div class="recipes">
+					<div class="recipe_title">Title</div>
+					<div class="recipe_image" style="background-image: url('image/test.jpg');"></div>
+				</div>
+				<div class="recipes">
+					<div class="recipe_title">Title</div>
+					<div class="recipe_image" style="background-image: url('image/test.jpg');"></div>
+				</div>
+				<div class="recipes">
+					<div class="recipe_title">Title</div>
+					<div class="recipe_image" style="background-image: url('image/test.jpg');"></div>
+				</div>
+			</div>
+		</section>
+		<section id="About">
+			<h1 class="Head1">About Me</h1>
+			<div class="margin" id="About_content">An application which helps people manage their kitchen, which means to manage their stock of food, seasoning, kitchenware. As well as provide recipes which listed prerequisite ingredients.  The main idea is like this, when I want to have specific cuisine at night, I can just check on the app which tells me what food and season I have, and what things I need to purchase.   </div>
+
+		</section>
+	</div>
+	<div id="Copyright">
+		<div class="note">Copyright &copy; 2020 UrKitchen. All Rights Reserved.</div>
+	</div>
+	
+	
+</body>
+</html>

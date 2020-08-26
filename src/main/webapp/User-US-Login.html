@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>User-Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ur Kitchen</title>
+<link rel="stylesheet" href="Main-page.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	
+<script type="text/javascript" src="User.js"></script>
+	
+</head>
+
+<body>
+	
+	<div id="login" class="login">
+		<form>
+			<table id="login-table">
+				<tbody>
+				<tr> 
+					<td> User ID: </td>
+					<td><input type="text" id="Uid"/></td>
+				</tr>
+				<tr> 
+					<td> Password: </td>
+					<td><input type="password" name="password" id="pwd"/></td>
+				</tr>
+				<tr> 
+					<td></td>
+					<td>
+						<input type="button" value="login" onclick="Signin();" />
+						<input type="button" value="Sign up!!" onclick="loadRegisterPage();" />
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</form>
+	<div id="err">Please Log in!</div>
+	</div>
+
+<script  type="text/javascript">
+//Log-in	
+		function Signin() {
+
+		var UidInput= $("#Uid").val();
+		var pwd= $("input[name='password']").val();
+
+		var UserLogin_URL = 'http://127.0.0.1:49000/api/UrKitchen/user/';
+			if (UidInput != "") {
+				$.getJSON(UserLogin_URL + UidInput,
+				function (data) {
+					if(data.length==0){ $('#err').html("<h2>Please log in with correct User ID or Password!</h2>");}
+					var UserId = `${data.UserID}`; var password = `${data.UserPWD}`;
+					if(pwd==password){
+						
+						var Usermenu = `<div class="menu_row" onclick="load_userPage();">
+										<div class="menu_Button"><img src="image/UrImage_Account.png" alt=""/></div>
+										<div id="account" class="menu_title">Log in</div>
+									</div>
+									<div class="menu_row" onclick="load_recipePage();">
+										<div class="menu_Button"><img src="image/UrImage_Recipe.png" alt=""/></div>
+										<div class="menu_title">Recipe</div>
+									</div>
+									<div class="menu_row" onclick="load_UrStockPage();">
+											<div class="menu_Button"><img src="image/UrImage_UrStock.png" alt=""/></div>
+											<div class="menu_title">Ur Stock</div>
+										</div>
+									<div class="menu_row" onclick="load_RummagePage();">
+											<div class="menu_Button"><img src="image/UrImage_Rummage.png" alt=""/></div>
+											<div class="menu_title">Rummage</div>
+										</div>
+									<div class="menu_row" onclick="load_UrTablePage();">
+											<div class="menu_Button"><img src="image/UrImage_UrTable.png" alt=""/></div>
+											<div class="menu_title">Ur Table</div>
+									</div>`;
+						$("#menu").html("");
+						$("#menu").html(Usermenu);
+						$("#account").html("");
+						$("#account").html(UserId);
+						$('#err').html("<h1>Login Succeeded!</h1>");
+						
+						setTimeout(function(){ 	alert("Welcome"); 
+											   	load_UrStockPage();//load page
+											   	loadinfo(UserId);
+											 }, 1000);
+						
+						
+					}else {
+						 $('#err').html("<h2>Please log in with correct User ID or Password!</h2>");
+					}
+				})
+				.fail(
+				function (xhr, textStatus, err) {
+					$('#err').html('Error: ' + err);
+				});
+			}else {
+					
+				$('#err').html("<h3>Please log in with correct User ID or Password!</h3>");
+			} 
+		}
+		
+				
+		
+		function loadinfo(Logid){
+			
+			
+			$.getJSON('http://127.0.0.1:49000/api/UrKitchen/user/' + Logid , function(data) {
+				var UserId = `${data.UserID}`;
+				var text = `User Id: ${data.UserID}<br>
+							Email: ${data.Email}<br>
+							Register Date: ${data.RegisterDate}<br>
+							First Name: ${data.FirstName}<br>
+							Last Name: ${data.LastName}<br>`	
+				$(".mypanel").html(text);
+				
+			});//get JSON end
+				
+			
+				
+		}
+		
+		function loadRegisterPage(){
+			$("#page").load("Registration.html");
+		}
+</script>
+	
+	
+</body>
+</html>

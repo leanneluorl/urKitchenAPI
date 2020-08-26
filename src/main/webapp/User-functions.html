@@ -1,0 +1,180 @@
+<!DOCTYPE html> 
+
+<html lang="en" style="height: 100%;"> 
+
+	<head>
+		
+		<meta charset="UTF-8"> 
+		
+		<title>User-functions</title>
+		<link rel="stylesheet" href="User.css">
+		<script type="text/javascript" src="User.js"></script>  
+		<script type="text/javascript">
+		
+			$(document).ready(function(){
+			$('#page1').hide();
+			//$('#page2').hide();
+			$('#page3').hide();
+			//$('#page4').hide();
+
+			$("#p1").click(function(){
+				var UserID = $("#account").text();
+				showEditUser(UserID);
+				$("#page1").show();
+			//	$("#page2").hide();
+				$('#page3').hide();
+			//	$('#page4').hide();
+			});
+		/*	$("#p2").click(function(){
+				$("#page1").hide();
+				$("#page2").show();
+				$('#page3').hide();
+				$('#page4').hide();
+				$("#defaultOpen1").click();
+			}); */
+			$("#p3").click(function(){
+				$("#page1").hide();
+			//	$("#page2").hide();
+				$('#page3').show();
+			//	$('#page4').hide();
+				$("#defaultOpen2").click();
+			});
+		/*	$("#p4").click(function(){
+				$("#page1").hide();
+				$("#page2").hide();
+				$('#page3').hide();
+				$('#page4').show();
+			});*/
+		});
+	</script>
+		
+		
+	</head>
+	
+	
+
+	<body>
+	
+		<div id="screen" class="left-margin" >
+			<button type="button" class="collapsible">Your Account details</button>
+			<!--Acount detail-->
+			<div id="banner" class="content">
+				<div class="panels">
+					<div class="mypanel">
+					</div>
+				</div>
+			</div>
+			<script>
+			var coll = document.getElementsByClassName("collapsible");
+			var i;
+
+			for (i = 0; i < coll.length; i++) {
+			  coll[i].addEventListener("click", function() {
+				this.classList.toggle("active");
+				var content = this.nextElementSibling;
+				if (content.style.display === "block") {
+				  content.style.display = "none";
+				} else {
+				  content.style.display = "block";
+				}
+			  });
+			}
+			</script>
+			<!--Acount detail end-->
+
+			<!--Admin Function button-->
+			<div id="p1" class="page_button" >
+			<p>Edit User Detail</p>
+			</div>
+			
+			<div id="p3" class="page_button" >
+			<p>Manage User account</p>
+			</div>
+			
+			<!--Admin Functions button ends-->
+
+			<!--Admin function pages-->
+			<div id="page1" class="page">
+				
+					<h4>User data</h4>
+					<!--Edit User Data-->	
+					<div id="User_data_box">
+						<div class="UserItem-title line">title</div>
+						<div class="UserItem-Input line"><input type="text" id="FirstName" value="'+data[i].Unit+'"/></div>
+					</div>
+					<div class="UserItem-button"><input type="button" value="login" onclick="editUser();" /></div>
+					<!--Result-->	
+				
+			</div>	
+
+			
+
+			<div id="page3" class="page">
+				<div class="L">
+					<button id="defaultOpen2" class="tablink" onclick="openPage('User-f1', this, 'lightyellow')">User functions</button>
+					<button id="EDT" class="tablink" onclick="openPage('User-f2', this, 'lightyellow')" >User functions</button>
+					<button class="tablink" onclick="openPage('User-f3', this, 'lightyellow')">User functions</button>
+					<button class="tablink" onclick="openPage('User-f4', this, 'lightyellow')">User functions</button>
+				</div>
+
+				<div class="R container-fluid">
+					<div id="User-f1" class="tabcontent">
+					  <h3>User-f1</h3>
+					  <p>User-f1 is where the heart is..</p>
+					</div>
+
+					<div id="User-f2" class="tabcontent">
+					  <h3>User-f2</h3>
+					  <p>Some User-f2 this fine day!</p> 
+					</div>
+
+					<div id="User-f3" class="tabcontent">
+					  <h3>User-f3</h3>
+					  <p>Get in touch, or swing by for a cup of coffee.</p>
+					</div>
+
+					<div id="Edit_Ingredient" class="tabcontent">
+					  <h3>User-f4</h3>
+					  <p>Who we are and what we do.</p>
+					</div>
+				</div>
+			</div>
+
+			<script>
+				function openPage(pageName,elmnt,color) {
+				  var i, tabcontent, tablinks;
+				  tabcontent = document.getElementsByClassName("tabcontent");
+				  for (i = 0; i < tabcontent.length; i++) {
+					tabcontent[i].style.display = "none";
+				  }
+				  tablinks = document.getElementsByClassName("tablink");
+				  for (i = 0; i < tablinks.length; i++) {
+					tablinks[i].style.backgroundColor = "";
+				  }
+				  document.getElementById(pageName).style.display = "block";
+				  elmnt.style.backgroundColor = color;
+					
+				  var page = pageName+".html"; 
+				  var pName = "#"+pageName;
+			 	  
+				  $(document).ready(function(){
+					  $(pName).load(page);
+					});
+				}
+
+				// Get the element with id="defaultOpen" and click on it
+				
+				</script>
+			
+
+
+	</div>
+
+			
+			
+			
+			
+			
+	</body>
+
+</html>

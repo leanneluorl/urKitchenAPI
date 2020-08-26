@@ -1,0 +1,180 @@
+<!DOCTYPE html> 
+
+<html lang="en" style="height: 100%;"> 
+
+	<head>
+		
+		<meta charset="UTF-8"> 
+		
+		<title>UrStock</title>
+		<link rel="stylesheet" href="User.css">
+		<link rel="stylesheet" href="Main-page.css">
+		<script type="text/javascript" src="User.js"></script>  
+		<script type="text/javascript" src="EditIngredient_Stock.js"></script>  
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function(){
+			$('#page1').hide();
+			//$('#page2').hide();
+			$('#page3').hide();
+			//$('#page4').hide();
+
+			$("#p1").click(function(){
+				var UserID = $("#account").text();
+				displayUserStock(UID);
+				$("#page1").show();
+			//	$("#page2").hide();
+				$('#page3').hide();
+			//	$('#page4').hide();
+			});
+		/*	$("#p2").click(function(){
+				$("#page1").hide();
+				$("#page2").show();
+				$('#page3').hide();
+				$('#page4').hide();
+				$("#defaultOpen1").click();
+			}); */
+			$("#p3").click(function(){
+				$("#page1").hide();
+			//	$("#page2").hide();
+				$('#page3').show();
+			//	$('#page4').hide();
+				$("#defaultOpen2").click();
+			});
+		/*	$("#p4").click(function(){
+				$("#page1").hide();
+				$("#page2").hide();
+				$('#page3').hide();
+				$('#page4').show();
+			});*/
+		});
+		</script>
+		
+		
+	</head>
+	
+	
+
+	<body>
+	
+		<div id="screen" class="left-margin top-margin" >
+			
+
+			<!--Admin Function button-->
+			<div id="p1" class="User_page_button" >
+				<p>Ur stock</p>
+			</div>
+			
+			<div id="p3" class="User_page_button" >
+			<p>Manage your stock</p>
+			</div>
+			
+			<!--Admin Functions button ends-->
+
+			<!--Admin function pages-->
+			<div id="page1" class="page container-fluid">
+				
+				<p class="Head1">Ur Stock</p>
+				<section id="UrStock">
+					<div id="location1" class="location" style="background-image: url('image/test.jpg');">
+						<h3 class="Location_Head">Location</h3>
+						<div id="" class="stockIGD-item" style="background-image: url('image/foodtype-01.png');"><div class="centered IGD_font"><span>Beef minced</span><br>200gram</div></div>						
+						<div id="" class="stockIGD-item" style="background-image: url('image/foodtype-01.png');"><div class="centered IGD_font">Italian Cuisine</div></div>						
+						<div id="" class="stockIGD-item" style="background-image: url('image/foodtype-01.png');"><div class="centered IGD_font">Italian Cuisine</div></div>
+					</div>
+					<div id="location2" class="location" style="background-image: url('image/test.jpg');">
+						<h3 class="Location_Head">Location</h3>
+						<div id="" class="stockIGD-item" style="background-image: url('image/Taiwanese.jpg');"><div class="centered IGD_font">Italian Cuisine</div></div>						
+						<div id="" class="stockIGD-item" style="background-image: url('image/Taiwanese.jpg');"><div class="centered IGD_font">Italian Cuisine</div></div>						
+						<div id="" class="stockIGD-item" style="background-image: url('image/Taiwanese.jpg');"><div class="centered IGD_font">Italian Cuisine</div></div>
+						
+					</div>
+					
+					<script>
+						$( document ).ready(function() {
+						 	var UID=$("#account").text();
+							displayUserStock(UID);
+							
+							//var UID=$("#account").text();
+						});
+						$("#p1").click(function(){
+							var UID=$("#account").text();
+							displayUserStock(UID);
+						}
+					</script>
+				</section>	
+				
+			</div>	
+
+			
+
+			<div id="page3" class="page">
+				<div class="L">
+					<button id="defaultOpen_US" class="tablink" onclick="openPage('Edit_UrStock', this, 'lightyellow')">Edit UrStock  Ingredient</button>
+					<button id="EDT" class="tablink" onclick="openPage('Edit_UrRecipe', this, 'lightyellow')" >User functions</button>
+					<button class="tablink" onclick="openPage('User-f3', this, 'lightyellow')">User functions</button>
+					<button class="tablink" onclick="openPage('User-f4', this, 'lightyellow')">User functions</button>
+				</div>
+
+				<div class="R container-fluid">
+					<div id="Edit_UrStock" class="tabcontent">
+					  <h3>Edit UrStock</h3>
+					  <p>Edit_UrStock is where the heart is..</p>
+					</div>
+
+					<div id="Edit_UrRecipe" class="tabcontent">
+					  <h3>Edit Ur Recipe</h3>
+					  <p>Some Edit_UrRecipe this fine day!</p> 
+					</div>
+
+					<div id="User-f3" class="tabcontent">
+					  <h3>User-f3</h3>
+					  <p>Get in touch, or swing by for a cup of coffee.</p>
+					</div>
+
+					<div id="Edit_Ingredient" class="tabcontent">
+					  <h3>User-f4</h3>
+					  <p>Who we are and what we do.</p>
+					</div>
+				</div>
+			</div>
+
+			<script>
+				function openPage(pageName,elmnt,color) {
+				  var i, tabcontent, tablinks;
+				  tabcontent = document.getElementsByClassName("tabcontent");
+				  for (i = 0; i < tabcontent.length; i++) {
+					tabcontent[i].style.display = "none";
+				  }
+				  tablinks = document.getElementsByClassName("tablink");
+				  for (i = 0; i < tablinks.length; i++) {
+					tablinks[i].style.backgroundColor = "";
+				  }
+				  document.getElementById(pageName).style.display = "block";
+				  elmnt.style.backgroundColor = color;
+					
+				  var page = pageName+".html"; 
+				  var pName = "#"+pageName;
+					
+			 	  
+				  $(document).ready(function(){
+					  $(pName).load(page);
+					});
+				}
+
+				// Get the element with id="defaultOpen" and click on it
+				document.getElementById("defaultOpen_US").click();
+				</script>
+			
+
+
+	</div>
+
+			
+			
+			
+			
+			
+	</body>
+
+</html>
