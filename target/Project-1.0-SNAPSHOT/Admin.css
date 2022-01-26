@@ -1,0 +1,135 @@
+@charset "utf-8";
+/* Admin page */
+/*div{font-family:Arial; text-align:center;  word-wrap:break-word;box-sizing: border-box;}
+body{border:0; padding:0;margin:0; height: 100%; overflow:hidden;}*/
+
+body{height: 100%; width: 100%; padding:0; margin:0; text-align:center; }
+.container-fluid{height :100%; padding:0; margin:0;}
+div{overflow:hidden; word-wrap:break-word;box-sizing: border-box; font-family:Arial;}
+#container{overflow:hidden;text-align: right;vertical-align: middle; height:5%; background:#C4C4C4; }
+.login{width: auto;display: inline-block;text-align: left;  border: 0px;}
+
+#login1{margin-right: 20px; line-height: 30px; font-weight: bold; color: #444; }
+
+#main{height:95%;scroll-behavior: auto; text-align: center;}
+#login{	width: 400px; background:#51A668; box-shadow: 0px 0px  6px rgba(0, 0, 0, 0.6) ; text-align: left;
+		position: absolute; top: 50%; left: 50%;  margin: -150px 0 0 -200px; border-radius: 10px; padding: 15 30;}
+#login-table{width: auto; margin:30px 60px; }
+input[type=button] {width:90px;}
+
+
+
+
+
+/* AdminFunctions page */
+	
+	
+	#screen{ height:100vh; background-color:  #6ED68A;}
+	#banner{ float: top;  width:100%;  text-align: center; }
+		.panels{text-align: left;display: inline-block;}
+		.mypanel{text-align:left; width: auto;}
+		
+	.mypanel2{text-align:left; width: auto;}
+	.page_button{	float:left;  width:25%; height:6%; font-size:1.2em ;font-weight: bold; line-height:5%;background-color:#51A668; cursor: pointer; 
+			border-top-left-radius: 10px;border-top-right-radius: 10px;box-shadow: 3px -2px  4px rgba(0, 0, 0, 0.6) ; border-right:solid 0.1px #333; border-left:solid 0.1px #6ED68A;}
+		.page_button:hover {background-color:#3D7F4F;}
+	.page{	height:100vh; overflow: auto;
+			text-align:center; width:100%; float:left;background-color:#AAC4B1; 
+			box-shadow: -2px 5px  4px rgba(0, 0, 0, 0.6) ;  border: solid 0.1px #666;
+			}
+		.page:after {content: "";   display: block;   padding-bottom: 65%; }
+		.pp1{width: auto;display: inline-block;margin:0 20; text-align: center;}
+	
+
+	#bottom{float: right; background-color:  #e6ffcc; width:100%; height:5%;
+			margin: 0%; position: fixed;   left: 0%; bottom: 0%;}
+
+	.L{width:10%;float:left;}
+	.R{width:90%;float:left;}
+
+/*Edit Pages style*/	
+	#feedback{width:90vw;}
+	#Result,#Result1{float:right; background-color: lightyellow; width:100%; height:auto;text-align:center; }
+	.Result{text-align: center; width:auto; display: inline-block; }
+	
+	
+	#IGDform tr, td{ padding-left: 10px;}
+	#IGDform input[type=text]{  width:20em;}
+	#addRCPtable table, #RCPtable table{width:80%; margin: 20px auto;}
+	#addRCPtable input[type=button], #RCPtable input[type=button]{width: 100%;}
+	table{text-align: left; border-collapse: collapse;  color: #444; min-width: 300px; word-wrap:break-word; }
+    tr{  line-height: 25px; }
+    th{ background-color: #B1C3CC; border-right: 1px solid #B1C3CC;  color: #000;  font-size: 13px;  text-align: left; }
+    th, td{  padding-left: 10px;}
+	tbody.data tr{border: 1.2px solid #666;}
+	#IGDtable{margin: 20px 0;}
+	.addNew {width:80%; margin: 0px auto;}
+
+	.block {
+	  display: block;
+	  width: 100%;
+	  border: none;
+	  background-color: #4CAF50;
+	  padding: 14px 28px;
+	  font-size: 16px;
+	  cursor: pointer;
+	  text-align: center;
+	}
+
+	button.collapsible{padding:10px;}
+	.collapsible {
+	  background-color: #51A668;
+	  color: #B0EDB9;
+	  cursor: pointer;
+	  width: 100%;
+	  border: none;
+	  text-align: center;
+	  outline: none;
+	  margin: 0 0 4px 0;
+	  font-size: 20px;
+	}
+	.active, .collapsible:hover { background-color: #3D7F4F; }
+	.content {
+	  padding: 30px 18px;
+	  display: none;
+	  overflow: hidden;
+	}
+		
+	/* Style tab links */
+	button.tablink{padding:10px;}
+	.tablink {
+	  background-color: #666;
+	  color: #222;
+	  float: left;
+	  border:none;
+	  border-bottom: 1px solid grey;
+	  outline: none;
+	  cursor: pointer;
+	  padding: 25px 5px;
+	  font-size: 15px;
+	  width: 100%;
+	  text-align: left;
+	  font-weight:600;
+	}
+
+	.tablink:hover {
+	  background-color: #999;
+	}
+
+	.tabcontent {
+	  color: #222;
+	  display: none;
+	  padding: 20px 0px;
+	  height: 100%;
+	  overflow: scroll;
+	}
+ 	.tabcontent:after {content: "";   display: block;   padding-bottom: 100%; }
+
+	#Edit_FoodType {background-color: lightyellow;}
+	#Edit_DietType {background-color: lightyellow;}
+	#Edit_Cuisine {background-color: lightyellow;}
+	#Edit_Ingredient, #Edit_Location {background-color: lightyellow;}
+
+	#Edit_Recipe, #Add_Recipe {background-color: #F2F2CF; } 
+
+

@@ -1,0 +1,148 @@
+<!doctype html>
+<html style="height: 100%;"><head>
+<meta charset="utf-8">
+<title>Admin of UrKitchen</title>
+<link rel="stylesheet" href="Admin.css">
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js">
+		
+		
+		function createCORSRequest(method, url) {
+		  var xhr = new XMLHttpRequest();
+		  if ("withCredentials" in xhr) {
+
+			// Check if the XMLHttpRequest object has a "withCredentials" property.
+			// "withCredentials" only exists on XMLHTTPRequest2 objects.
+			xhr.open(method, url, true);
+
+		  } else if (typeof XDomainRequest != "undefined") {
+
+			// Otherwise, check if XDomainRequest.
+			// XDomainRequest only exists in IE, and is IE's way of making CORS requests.
+			xhr = new XDomainRequest();
+			xhr.open(method, url);
+
+		  } else {
+
+			// Otherwise, CORS is not supported by the browser.
+			xhr = null;
+
+		  }
+		  return xhr;
+			}
+
+			var xhr = createCORSRequest('GET', url);
+			if (!xhr) {
+			  throw new Error('CORS not supported');
+			}
+	</script>
+	
+	<script  type="text/javascript">
+//Log-in	
+		function Signin() {
+
+		var Uid= $("#Uid").val();
+		var pwd= $("input[name='password']").val();
+
+		var AdminLogin_URL = 'http://127.0.0.1:49000/api/UrKitchen/admin/';
+			if (Uid != "") {
+				$.getJSON(AdminLogin_URL + Uid,
+				function (data) {
+					var UserId = `${data.AdminID}`; var password = `${data.AdminPWD}`;
+					if(pwd==password){
+						var text = `Admin Id:`
+						var User = `${data.AdminID}`
+						var text2 = `<input type="button" value="Preview" onclick="window.open('http://127.0.0.1:49000/');" />`
+						var text3 = `<input type="button" value="Log Out" onclick="window.open('http://127.0.0.1:49000/Admin.html');" />`
+						
+						$("#loginUser").html(text);
+						$("#User").html(User);
+						$("#preview").html(text2);
+						$("#logout").html(text3);
+						$("#main").load("http://127.0.0.1:49000/AdminFunctions.html");
+						loadinfo(UserId);
+					}
+				})
+				.fail(
+				function (xhr, textStatus, err) {
+					$('#main').html('Error: ' + err);
+				});
+			} else {
+				function myFunction() {
+				 $('#err').html("<h1>Please log in!</h1>");
+				}
+			}
+		}
+		
+				
+		
+		function loadinfo(Logid){
+			
+			
+			$.getJSON('http://127.0.0.1:49000/api/UrKitchen/admin/' + Logid , function(data) {
+				var UserId = `${data.AdminID}`;
+				var text = `Admin Id: ${data.AdminID}<br>
+							Name: ${data.AdminName}<br>
+							Created Date: ${data.CreateDate}<br>
+							Account ID: ${data.AccID}<br>`	
+				$(".mypanel").html(text);
+				
+			});
+//get JSON end
+				
+			
+				
+		}
+	</script>
+	
+	
+</head>
+
+<body>
+<div id="container">
+	<div class="login">
+		<table style="width:auto; border:0px;"><tbody>
+			<tr>
+			  	<td><div id="loginUser">Ur Kitchen Admin login Page</div></td>
+				<td><div id="User"></div></td>
+			  	<td><div id="logout"></div></td>
+				<td><div id="preview"></div></td>
+			  
+			  
+			</tr>
+		  	</tbody>
+		</table>	
+	</div>
+	
+</div>
+<div id="main">
+	<div id="login">
+		<form>
+		<table id="login-table">
+		  
+			<tbody>
+			<tr> 
+				<td> Admin ID: </td>
+				<td><input type="text" id="Uid"/></td>
+			</tr>
+			<tr> 
+				<td> Password: </td>
+				<td><input type="password" name="password" id="pwd"/></td>
+			</tr>
+			<tr> 
+				<td></td>
+			  	<td><input type="button" value="login" onclick="Signin();" /></td>
+			</tr>
+			
+
+			
+		  </tbody>
+		</table>
+		
+		</form>
+		
+	</div>
+	
+</div>
+<div id="err"></div>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!doctype html>
+<html style="height: 100%;">
+<head>
+<meta charset="utf-8">
+<title>Online bank Service Project</title>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js">
+		
+		
+		function createCORSRequest(method, url) {
+		  var xhr = new XMLHttpRequest();
+		  if ("withCredentials" in xhr) {
+
+			// Check if the XMLHttpRequest object has a "withCredentials" property.
+			// "withCredentials" only exists on XMLHTTPRequest2 objects.
+			xhr.open(method, url, true);
+
+		  } else if (typeof XDomainRequest != "undefined") {
+
+			// Otherwise, check if XDomainRequest.
+			// XDomainRequest only exists in IE, and is IE's way of making CORS requests.
+			xhr = new XDomainRequest();
+			xhr.open(method, url);
+
+		  } else {
+
+			// Otherwise, CORS is not supported by the browser.
+			xhr = null;
+
+		  }
+		  return xhr;
+			}
+
+			var xhr = createCORSRequest('GET', url);
+			if (!xhr) {
+			  throw new Error('CORS not supported');
+			}
+	</script>
+	<script type="text/javascript" src="49000.js"></script> 
+	<script  type="text/javascript">
+		
+		function Signin() {
+ 
+       $("#main").html("");
+ 
+        var Uid= $("#Uid").val();
+		var pwd= $("input[name='password']").val();
+		 
+		var Cus_URL = 'http://127.0.0.1:49000/api/onlinebankservice/customer/';
+        if (Uid != "") {
+            $.getJSON(Cus_URL + Uid,
+            function (data) {
+                var UserId = `${data.UserId}`; var password = `${data.pwd}`;
+				if(pwd==password){
+					var text = `User Id: ${data.UserId}`
+					var text2 = `<input type="button" value="Log out!" onclick="window.location.href = 'http://127.0.0.1:49000/';" />`
+					$("#login1").html(text);
+					$("#login2").html(text2);
+					$("#main").load("http://127.0.0.1:49000/customer.html");
+					loadinfo();
+				}
+            })
+            .fail(
+            function (xhr, textStatus, err) {
+                $('#main').html('Error: ' + err);
+            });
+        } else {
+            function myFunction() {
+			 $('#main').html("<h1>Please log in!</h1>");
+			}
+        }
+    }
+		
+		
+		
+		function signup(){
+        $("#main").load("http://127.0.0.1:49000/create.html");
+    	}
+		
+		
+		function loadinfo(){
+			var Logid=$("#Uid").val();
+			
+			$.getJSON('http://127.0.0.1:49000/api/onlinebankservice/customer/'+Logid, function(data) {
+				var UserId = `${data.UserId}`;
+				var text = `UserId: ${data.UserId}<br>
+							Name: ${data.name}<br>
+							Created: ${data.created}<br>
+							CorrespondenceAddress: ${data.CorrespondenceAddress}<br>
+							Email: ${data.Email}<br>`	
+				$(".mypanel").html(text);
+				let dropdown = $('#locality-dropdown');
+
+				dropdown.empty();
+
+				dropdown.append('<option selected="true" disabled>Choose your account</option>');
+				dropdown.prop('selectedIndex', 0);
+					
+				const url = 'http://127.0.0.1:49000/api/onlinebankservice/customer/acc/'+UserId;
+
+				// Populate dropdown with list of Accounts
+				$.getJSON(url, function (data1) {
+				  $.each(data1, function (key, entry) {
+					dropdown.append($('<option></option>').attr('value', entry.AccountNumber).text(entry.AccountNumber));
+				  })
+				});
+//Dropdown End
+			});
+//get JSON end
+				
+			
+				
+		}
+			</script>
+	
+	<style>
+		
+		div{text-align:center; overflow:auto; word-wrap:break-word;box-sizing: border-box;}
+		body{border:0; padding:0;margin:0; height: 100%;}
+		#container{overflow:hidden;text-align: right;vertical-align: middle; height:5%; background:#C4C4C4; padding:1px; }
+		#login{width: auto;display: inline-block;text-align: left;}
+		
+		input[type=button] {width:90px;}
+		#main{height:95%;scroll-behavior: auto;}
+	</style>
+</head>
+
+<body>
+<div id="container">
+	<div id="login">
+		<form action="First" method="post">
+		<table width="auto" border="0">
+		  
+			<tbody>
+			<tr>
+			  <td>User ID:</td>
+			  <td><input type="text" id="Uid"/></td>
+			  <td>Password:</td>
+			  <td><input type="password" name="password" id="pwd"/></td>
+			  <td><input type="button" value="login" onclick="Signin();" /></td>
+			  <td><input type="button" value="Sign up!" onclick="signup();" /></td>
+			  <td><div id="login1"></div></td>
+			  <td><div id="login2"></div></td>
+			</tr>
+			
+		  </tbody>
+		</table>
+		
+		</form>
+		
+	</div>
+	
+	
+</div>
+<div id="main"></div>
+</body>
+</html>

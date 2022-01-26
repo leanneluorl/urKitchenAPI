@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Rummage</title>
+<link rel="stylesheet" href="Main-page.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>	
+<script type="text/javascript" src="Recipe.js"></script>
+<script type="text/javascript" src="User.js"></script>
+	
+
+<script>
+		var count=0;
+		function allowDrop(ev) {
+		  ev.preventDefault();
+		}
+
+		function drag(ev) {
+		  ev.dataTransfer.setData("text", ev.target.id);
+		}
+
+		function drop(ev) {
+
+			/**/
+		  ev.preventDefault();
+		  var data1 = ev.dataTransfer.getData("text");
+		  ev.target.appendChild(document.getElementById(data1));
+			console.log(data1);
+			var Sid = "#"+data1;
+			var selections =$(Sid).text();
+			count++;
+			if(count===1){	$(".selection1").append(selections);	}	
+			if(count===2){	$(".selection2").append(selections);	}
+			if(count===3){	$(".selection3").append(selections); 	}
+		}
+		
+		$( document ).ready(function() {
+			 showSearchRCPbyStockIGD();
+		});
+		
+		function ResetsearchRecipebyIGD_R(){
+			$("#page").load("Rummage.html");
+		}
+		
+
+</script>
+	
+	
+</head>
+
+<body>
+	<h1 class="Head1">Rummage</h1>
+	<section id="Rummage-IngredientSearch_box">
+		
+		<h2 class="Head2">Grab Ur Ingredients</h2>
+		<p id="wordings">Grab ingredient to see what you can cook today.<br> 
+			Search Recipes by Ingredients:
+			<span class="selection1"></span><span class="selection2"></span><span class="selection3"></span> </p>
+		<div id="RCP-selection" style="background-image: url('image/Cuttingboard-01.png');" class="cat_box">
+			<div class="IGD-drop-button-box" ondrop="drop(event)" ondragover="allowDrop(event)">
+				<button class="IGD-Drop-button" type="button" onclick="searchRecipebyIGD();">Find!</button>
+				<button class="IGD-Drop-button" type="button" onclick="ResetsearchRecipebyIGD_R();">Reset</button>
+			</div>	
+			<div class="IGD-dropbox" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+			<div class="IGD-dropbox" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+			<div class="IGD-dropbox" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+		</div>
+		
+		<div id="Drag-Ingredient">
+			<div class="drag-L-type stock-type" style="background-image: url('image/test.jpg');"><p class="Head2-foodtype">Foodtype and foodtype</p></div>
+			<div class="drag-R-type">
+				<!--Drag -->
+				<div class="IGD-dragbox">
+				<div  class="IGD-Icon" draggable="true" ondragstart="drag(event)" id="1" style="background-image: url('image/foodtype-01.png');" > <p class="IGD-Icon_font 1">Pork minced</p></div>
+				</div>
+				<!--Drag -->
+				<!--Drag -->
+				<div class="IGD-dragbox">
+				<div  class="IGD-Icon" draggable="true" ondragstart="drag(event)" id="2" style="background-image: url('image/foodtype-01.png');" > <p class="IGD-Icon_font 2">Pork minced</p></div>
+				</div>
+				<!--Drag -->
+				<!--Drag -->
+				<div class="IGD-dragbox">
+				<div  class="IGD-Icon" draggable="true" ondragstart="drag(event)" id="3" style="background-image: url('image/foodtype-01.png');" > <p class="IGD-Icon_font 3">Pork minced</p></div>
+				</div>
+				<!--Drag -->
+			</div>
+		
+		</div>
+	</section>
+	
+	<div class="margin" >
+		<section class="SearchResult_recipe">
+			
+		</section>
+	</div>
+	
+</body>
+</html>

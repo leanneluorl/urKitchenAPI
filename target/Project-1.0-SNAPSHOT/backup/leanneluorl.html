@@ -1,0 +1,357 @@
+<!DOCTYPE html5> 
+
+<html lang="en" style="height: 100%;"> 
+
+	<head>
+		
+		<meta charset="UTF-8"> 
+		
+		<title>Customer</title>
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js">
+		function createCORSRequest(method, url) {
+		  var xhr = new XMLHttpRequest();
+		  if ("withCredentials" in xhr) {
+
+			// Check if the XMLHttpRequest object has a "withCredentials" property.
+			// "withCredentials" only exists on XMLHTTPRequest2 objects.
+			xhr.open(method, url, true);
+
+		  } else if (typeof XDomainRequest != "undefined") {
+
+			// Otherwise, check if XDomainRequest.
+			// XDomainRequest only exists in IE, and is IE's way of making CORS requests.
+			xhr = new XDomainRequest();
+			xhr.open(method, url);
+
+		  } else {
+
+			// Otherwise, CORS is not supported by the browser.
+			xhr = null;
+
+		  }
+		  return xhr;
+			}
+
+			var xhr = createCORSRequest('GET', url);
+			if (!xhr) {
+			  throw new Error('CORS not supported');
+			}
+		</script>
+		
+		<script type="text/javascript">
+		$(document).ready(function(){
+			$('#page1').hide();
+			$('#page2').hide();
+			$('#page3').hide();
+			$('#page4').hide();
+
+			$("#p1").click(function(){
+				$("#page1").show();
+				$("#page2").hide();
+				$('#page3').hide();
+				$('#page4').hide();
+			});
+			$("#p2").click(function(){
+				$("#page1").hide();
+				$("#page2").show();
+				$('#page3').hide();
+				$('#page4').hide();
+			});
+			$("#p3").click(function(){
+				$("#page1").hide();
+				$("#page2").hide();
+				$('#page3').show();
+				$('#page4').hide();
+			});
+			$("#p4").click(function(){
+				$("#page1").hide();
+				$("#page2").hide();
+				$('#page3').hide();
+				$('#page4').show();
+			});
+		});
+			
+		
+ 
+ 
+		function Lodge() {
+ 		var API_lodge = "http://127.0.0.1:49000/api/onlinebankservice/customer/lodge";
+        var lodge = { 
+			"Uid": "leanneluorl",
+			"ACCno": $("option:selected").val(), 
+			"LodgeAmount": $("#LAmount").val()
+		};
+ 		
+		$.ajax({
+            url: API_lodge,
+            cache: false,
+            type: 'GET',
+            contentType: 'application/json; charset=utf-8',
+            data:lodge, 
+            statusCode: {
+                201 /*Created*/: function (data) {
+                   var text = `Time: ${data.TransactionDate}<br>
+								Type: ${data.Type}<br>
+								Description: ${data.Description}<br>
+								Amount: ${data.Amount}<br>
+								Post Balance: ${data.PostBalance}<br>`	
+				$(".Result").html(text);
+                }
+            }
+        });
+    }
+//Lodge end	
+			
+		function getBalance() {
+ 		var API_gb = "http://127.0.0.1:49000/api/onlinebankservice/customer/accountBalance";
+        var gb = { 
+			"Uid": "leanneluorl",
+			"ACCno": $("option:selected").val()
+		};
+ 		
+		$.ajax({
+            url: API_gb,
+            cache: false,
+            type: 'GET',
+            contentType: 'application/json; charset=utf-8',
+            data:gb, 
+            statusCode: {
+                201 /*Created*/: function (data) {
+                   var text = `Sort Code: ${data.SortCode}<br>
+								Account Type: ${data.AccountType}<br>
+								Account Number: ${data.AccountNumber}<br>
+								<b>Current Balance: ${data.CurrentBalance}<br></b>`	
+				$(".Result").html(text);
+                }
+            }
+        });
+    }	
+//getBalance end
+			
+		function withdraw() {
+ 		var API_wd = "http://127.0.0.1:49000/api/onlinebankservice/customer/withdraw";
+        var wd = { 
+			"Uid": "leanneluorl",
+			"ACCno": $("option:selected").val(),
+			"WAmount": $("#WAmount").val()
+		};
+ 		
+		$.ajax({
+            url: API_wd,
+            cache: false,
+            type: 'GET',
+            contentType: 'application/json; charset=utf-8',
+            data:wd, 
+            statusCode: {
+                201 /*Created*/: function (data) {
+                   var text = `Time: ${data.TransactionDate}<br>
+								Type: ${data.Type}<br>
+								Description: ${data.Description}<br>
+								Amount: ${data.Amount}<br>
+								Post Balance: ${data.PostBalance}<br>`		
+				$(".Result").html(text);
+                }
+            }
+        });
+    }	
+//withdraw end
+			
+		function transfer() {
+ 		var API_tf = "http://127.0.0.1:49000/api/onlinebankservice/customer/transfer";
+        var tf = { 
+			"Uid": "leanneluorl",
+			"ACCno": $("option:selected").val(),
+			"TACCno": $("#TACCno").val(),
+			"TAmount": $("#TAmount").val()
+		};
+ 		
+		$.ajax({
+            url: API_tf,
+            cache: false,
+            type: 'GET',
+            contentType: 'application/json; charset=utf-8',
+            data:tf, 
+            statusCode: {
+                201 /*Created*/: function (data) {
+                   var text = `Time: ${data.TransactionDate}<br>
+								Type: ${data.Type}<br>
+								Description: ${data.Description}<br>
+								Amount: ${data.Amount}<br>
+								Post Balance: ${data.PostBalance}<br>`		
+				$(".Result").html(text);
+                }
+            }
+        });
+    }	
+			
+			
+	</script>
+		
+		
+	</head>
+	<style>
+	div{text-align:center; overflow:hidden; word-wrap:break-word;box-sizing: border-box;}
+	body{border:0; padding:0;margin:0;}
+	#screen{ height:100%;}
+	#banner{ float: top; background-color: lightgreen; width:100%; height:40%; text-align: center; }
+		#banner h1{line-height:69%;}
+		#panels{text-align: left;display: inline-block;}
+	.mypanel{text-align:left; width: auto;}
+	.mypanel2{text-align:left; width: auto;}
+		#p1{background-color:#f0a5ba; cursor: pointer;}
+		#page1{text-align:center;height:15%;width:100%;clear:both;background-color:#f0a5ba;}
+		#p2{background-color:#edd38a;cursor: pointer;}
+		#page2{text-align:center;height:15%;width:100%;clear:both;background-color:#edd38a;}
+		#p3{background-color:#b7ed8a;cursor: pointer;}
+		#page3{text-align:center;height:15%;width:100%;clear:both;background-color:#b7ed8a;}
+		#p4, #page4{background-color:#8aedcc;cursor: pointer;}
+		.page{height:20%;text-align: left; }
+		.pp1{width: auto;display: inline-block;margin: 6 0 0 0;}
+	.left{ float:left;  width:25%; height:10%; font-size:1.5em ;font-weight: bold; line-height:6%;}
+	#Result{ float:right; background-color: lightyellow; width:100%; height:55%;text-align:center; }
+	.Result{text-align: left; width:auto; display: inline-block; }
+	#bottom{clear: both; background-color:  #e6ffcc; width:100%; height:5%;}
+	
+	
+	</style>
+	
+
+	<body style="height: 100%;">
+	<!--Acount detail-->
+		<div id="screen">
+		<div id="banner">
+		<h1>Your Account details</h1>
+			<div id="panels">
+			<div class="mypanel">
+			</div>
+			<div class="mypanel2"><option value="AB">Your Accounts: </option>
+				<select id="locality-dropdown" name="locality"></select></div>
+			</div>
+			<script>
+			$.getJSON('http://127.0.0.1:49000/api/onlinebankservice/customer/leanneluorl', function(data) {
+				var UserId = `${data.UserId}`;
+				var text = `UserId: ${data.UserId}<br>
+							Name: ${data.name}<br>
+							Created: ${data.created}<br>
+							CorrespondenceAddress: ${data.CorrespondenceAddress}<br>
+							Email: ${data.Email}<br>`	
+				$(".mypanel").html(text);
+			});
+//get JSON end
+				
+			let dropdown = $('#locality-dropdown');
+
+				dropdown.empty();
+
+				dropdown.append('<option selected="true" disabled>Choose your account</option>');
+				dropdown.prop('selectedIndex', 0);
+
+				const url = 'http://127.0.0.1:49000/api/onlinebankservice/customer/acc/leanneluorl';
+
+				// Populate dropdown with list of Accounts
+				$.getJSON(url, function (data) {
+				  $.each(data, function (key, entry) {
+					dropdown.append($('<option></option>').attr('value', entry.AccountNumber).text(entry.AccountNumber));
+				  })
+				});
+//Dropdown End
+			</script>
+			
+		
+		</div>
+		<!--Acount detail end-->
+		
+		<!--Customer action selection-->
+		<div id="p1" class="left" >
+		<p>Lodgement</p>
+		</div>
+		<div id="p2" class="left" >
+		<p>Withdraw</p>
+		</div>
+		<div id="p3" class="left" >
+		<p>Transfer</p>
+		</div>
+		<div id="p4" class="left" onclick="getBalance();" >
+		<p>Balance</p>
+		</div>
+		<!--Customer action selection-->
+			
+		<!--action pages-->
+		<div id="page1" class="page">
+			<div class="pp1"><br>
+			<form action="First" method="post">
+				<table width="35%" border="0">
+				<tbody>
+					<tr>
+					  <td>Amount:</td>
+					  <td><input type="text" id="LAmount"/></td></tr>
+					<tr>
+					  <td> </td>
+					  <td><input type="button" value="Lodge" onclick="Lodge();"/></td>
+					</tr>
+				  </tbody>
+				</table>
+			</form>
+			</div>
+		</div>	
+		
+		<div id="page2" class="page">
+			<div class="pp1"><br>
+			<form action="withdraw" method="get">
+				<table width="35%" border="0">
+				<tbody>
+					<tr>
+					  <td>Amount:</td>
+					  <td><input type="text" id="WAmount"/></td></tr>
+					<tr>
+					  <td> </td>
+					  <td><input type="button" value="Withdraw" onclick="withdraw();"/></td>
+					</tr>
+				  </tbody>
+				</table>
+			</form>
+			</div>
+		</div>
+			
+		<div id="page3" class="page">
+			<div class="pp1">
+			<form action="transfer" method="get">
+				<table width="auto" border="0">
+				<tbody>
+					<tr>
+					  <td>Reciever's Account Number:</td>
+					  <td><input type="text" id="TACCno"/></td></tr>
+											 
+					<tr>
+					  <td>Amount:</td>
+					  <td><input type="text" id="TAmount"/></td></tr>
+					<tr>
+					  <td> </td>
+					  <td><input type="button" value="Transfer" onclick="transfer();"/></td>
+					</tr>
+				  </tbody>
+				</table>
+			</form>
+			</div>
+		</div>
+			
+		<!--Result-->	
+		<div id="Result" >
+			<h3>Result</h3>
+			<div class="Result" ></div>
+		</div>
+		<!--Result-->	
+		
+		<div id="bottom" style="line-height:3%" >
+		<p>CA2 Online banking service Project<br/></p>
+		</div>
+		</div>
+
+			
+			
+			
+			
+			
+	</body>
+
+</html>

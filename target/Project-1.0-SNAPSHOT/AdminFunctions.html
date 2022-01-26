@@ -1,0 +1,286 @@
+<!DOCTYPE html5> 
+
+<html lang="en" style="height: 100%;"> 
+
+	<head>
+		
+		<meta charset="UTF-8"> 
+		
+		<title>Customer</title>
+		<link rel="stylesheet" href="Admin.css">
+		
+		<script type="text/javascript">
+		
+			$(document).ready(function(){
+			$('#page1').hide();
+			$('#page2').hide();
+			$('#page3').hide();
+			$('#page4').hide();
+
+			$("#p1").click(function(){
+				$("#page1").show();
+				$("#page2").hide();
+				$('#page3').hide();
+				$('#page4').hide();
+			});
+			$("#p2").click(function(){
+				$("#page1").hide();
+				$("#page2").show();
+				$('#page3').hide();
+				$('#page4').hide();
+				$("#defaultOpen1").click();
+			});
+			$("#p3").click(function(){
+				$("#page1").hide();
+				$("#page2").hide();
+				$('#page3').show();
+				$('#page4').hide();
+				$("#defaultOpen2").click();
+			});
+			$("#p4").click(function(){
+				$("#page1").hide();
+				$("#page2").hide();
+				$('#page3').hide();
+				$('#page4').show();
+			});
+		});
+
+
+		function clearStatus() {
+			$('#status').html('');
+		}
+		
+			
+		function SearchUser(Email) {
+			clearStatus();
+
+			var E = $('#Email').val();
+			
+			if(Email==undefined){
+				Email = E;
+			}
+			
+			//利用Get方式取得。
+			$.getJSON("http://127.0.0.1:49000/api/UrKitchen/admin/User/"+Email,
+			function (data) {
+				$("#Users tr").remove();
+				for (i = 0; i < data.length; i++) {
+					$("#Users").append("<tr>"+
+								  "<td>" + data[i].UserID + "</td>" +   
+								  "<td>" + data[i].Email + "</td>" +
+								  "<td>" + data[i].UserPWD + "</td>" +
+								  "<td>" + data[i].FirstName + "</td>" +
+								  "<td>" + data[i].LastName + "</td>" +
+								  "<td>" + data[i].RegisterDate + "</td>" +
+								  "<td>" + data[i].MobileNo + "</td>" +
+								  "<td>" + data[i].AccID + "</td>" +
+								  "</tr>");
+					}
+				})
+			.fail(
+				function (xhr, textStatus, err) {
+					$('#status').html('Error: ' + err);
+				});
+			
+		}
+
+		//開始時，先把資料讀取進來
+		$(document).ready(function () {
+			SearchUser("all");
+		});
+//SearchUser end
+		
+			
+		
+
+ 
+	</script>
+		
+		
+	</head>
+	
+	
+
+	<body>
+	<!--Acount detail-->
+		<div id="screen" >
+			<button type="button" class="collapsible">Your Account details</button>
+			<div id="banner" class="content">
+				<div class="panels">
+					<div class="mypanel">
+					</div>
+				</div>
+			</div>
+			<script>
+			var coll = document.getElementsByClassName("collapsible");
+			var i;
+
+			for (i = 0; i < coll.length; i++) {
+			  coll[i].addEventListener("click", function() {
+				this.classList.toggle("active");
+				var content = this.nextElementSibling;
+				if (content.style.display === "block") {
+				  content.style.display = "none";
+				} else {
+				  content.style.display = "block";
+				}
+			  });
+			}
+			</script>
+			<!--Acount detail end-->
+
+			<!--Admin Function button-->
+			<div id="p1" class="page_button" >
+			<p>Manage User accounts</p>
+			</div>
+			<div id="p2" class="page_button" >
+			<p>Edit Recipe</p>
+			</div>
+			<div id="p3" class="page_button" >
+			<p>Edit Database</p>
+			</div>
+			<div id="p4" class="page_button" onclick="getBalance();" >
+			<p>Website content</p>
+			</div>
+			<!--Admin Functions button ends-->
+
+			<!--Admin function pages-->
+			<div id="page1" class="page">
+				<div class="pp1"><br>
+					<form>
+						<table class="input-table">
+						<tbody>
+							<tr>
+							  <td>Email:</td>
+							  <td><input type="text" id="Email"/></td></tr>
+							<tr>
+							  <td> </td>
+							  <td><input type="button" value="Search" onclick="SearchUser();"/></td>
+							</tr>
+						  </tbody>
+						</table>
+					</form><br>
+					<!--Result-->	
+					<div id="Result">
+						<section class="content-wrapper main-content">
+							<h4>User data</h4>
+							<table>
+								<thead>
+									<tr>
+										<th>User ID</th>
+										<th>Email</th>
+										<th>User Password</th>
+										<th>First Name</th>
+										<th>Last Name</th>
+										<th>Register Date</th>
+										<th>Mobile No</th>
+										<th>AccID</th>	
+									</tr>
+								</thead>
+								<tbody id="Users" class="data">
+								</tbody>
+							</table>
+						</section>
+					</div>
+					<!--Result-->	
+				</div>
+			</div>	
+
+			<div id="page2" class="page">
+				<div class="L">
+				<button id="defaultOpen1" class=" tablink" onclick="openPage('Edit_Recipe', this, '#F2F2CF')">Edit Recipe</button>
+				<button class="tablink" onclick="openPage('Add_Recipe', this, '#F2F2CF')" >Add Recipe</button>
+				</div>
+
+				<div class="R container-fluid">
+					<div id="Edit_Recipe" class="tabcontent">
+					  <h3>Edit_Recipe</h3>
+					  <p>Edit_Recipe is where the heart is..</p>
+					</div>
+
+					<div id="Add_Recipe" class="tabcontent">
+					  <h3>Add_Recipe</h3>
+					  <p>Some Add_Recipe this fine day!</p> 
+					</div>
+
+				</div>
+			</div>
+
+			<div id="page3" class="page">
+				<div class="L">
+					<button id="defaultOpen2" class="tablink" onclick="openPage('Edit_FoodType', this, 'lightyellow')">Edit FoodType</button>
+					<button id="EDT" class="tablink" onclick="openPage('Edit_DietType', this, 'lightyellow')" >Edit DietType</button>
+					<button class="tablink" onclick="openPage('Edit_Cuisine', this, 'lightyellow')">Edit Cuisine</button>
+					<button class="tablink" onclick="openPage('Edit_Location', this, 'lightyellow')">Edit Location</button>
+					<button class="tablink" onclick="openPage('Edit_Ingredient', this, 'lightyellow')">Edit Ingredient</button>
+				</div>
+
+				<div class="R container-fluid">
+					<div id="Edit_FoodType" class="tabcontent">
+					  <h3>Edit_FoodType</h3>
+					  <p>Edit_FoodType is where the heart is..</p>
+					</div>
+
+					<div id="Edit_DietType" class="tabcontent">
+					  <h3>Edit_DietType</h3>
+					  <p>Some Edit_DietType this fine day!</p> 
+					</div>
+
+					<div id="Edit_Cuisine" class="tabcontent">
+					  <h3>Contact</h3>
+					  <p>Get in touch, or swing by for a cup of coffee.</p>
+					</div>
+					
+					<div id="Edit_Ingredient" class="tabcontent">
+					  <h3>About</h3>
+					  <p>Who we are and what we do.</p>
+					</div>
+					
+					<div id="Edit_Location" class="tabcontent">
+					  <h3>Contact</h3>
+					  <p>Get in touch, or swing by for a cup of coffee.</p>
+					</div>
+				</div>
+			</div>
+
+			<script>
+				function openPage(pageName,elmnt,color) {
+				  var i, tabcontent, tablinks;
+				  tabcontent = document.getElementsByClassName("tabcontent");
+				  for (i = 0; i < tabcontent.length; i++) {
+					tabcontent[i].style.display = "none";
+				  }
+				  tablinks = document.getElementsByClassName("tablink");
+				  for (i = 0; i < tablinks.length; i++) {
+					tablinks[i].style.backgroundColor = "";
+				  }
+				  document.getElementById(pageName).style.display = "block";
+				  elmnt.style.backgroundColor = color;
+					
+				  var page = pageName+".html"; 
+				  var pName = "#"+pageName;
+			 	  
+				  $(document).ready(function(){
+					  $(pName).load(page);
+					});
+				}
+
+				// Get the element with id="defaultOpen" and click on it
+				document.getElementById("defaultOpen2").click();
+				</script>
+			
+
+
+			<div id="bottom" style="line-height:3%" >
+			<p>NCIRL Final Project<br/></p>
+			</div>
+		</div>
+
+			
+			
+			
+			
+			
+	</body>
+
+</html>

@@ -1,0 +1,507 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Edit_Recipe</title>
+<link rel="stylesheet" href="Admin.css">
+<link rel="stylesheet" href="Recipe.css">
+<script type="text/javascript" src="EditIngredient.js"></script>  
+</head>
+
+<body>
+	<div class="pp1"><br>
+					<form>
+						<table class="input-table">
+						<tbody>
+							<tr>
+							  <td>Keyword:</td>
+							  <td><input type="text" id="R_keyword" name="R_keyword"/></td>
+							  <td><label for="order">&nbsp;&nbsp;Order by:</label></td>
+							  <td>
+								  <select id="R_order" name="R_order">
+									<option value="RecipeID">Recipe ID</option>
+									<option value="RecipeTitle">Recipe Title</option>
+									<option value="Author">Author</option>
+									<option value="AdminID">Admin ID</option>
+									<option value="UserID">User ID</option>
+									<option value="ViewTimes">View Times</option>
+									<option value="DietType">Diet Type</option>
+									<option value="Cuisine">Cuisine</option>
+								  </select>
+							  </td>
+							  <td>
+								  <select id="R_sort" name="R_sort">
+									<option value="asc">Ascending</option>
+									<option value="desc">Descending</option>
+								  </select>
+							  </td>
+							</tr>
+							<tr>
+							  <td> </td>
+							  <td><input type="button" value="Search" onclick="SearchRCP();"/></td>
+							</tr>
+						  </tbody>
+						</table>
+					</form><br>
+					<!--Result-->	
+					<div id="Result">
+						<section class="content-wrapper main-content">
+							<h4>Recipe data</h4>
+							<table>
+								<thead>
+									<tr>
+										<th>Recipe ID</th>
+										<th>Recipe Title</th>
+										<th>Recipe Info</th>
+										<th>CreateDate</th>
+										<th>Author</th>
+										<th>Admin ID</th>
+										<th>User ID</th>
+										<th>ViewTimes</th>
+										<th>DietType</th>
+										<th>Cuisine</th>
+										<th>Edit</th>
+										<th>Delete</th>
+									</tr>
+								</thead>
+								<tbody id="RCPitems" class="data">
+								</tbody>
+							</table>
+						</section>
+						<br><br>
+						<div id="status"></div>
+						
+						<section id="RCPtable" class="content-wrapper main-content">
+							<table class="input-table">
+								<tbody id="RCPform" class="data">		
+								</tbody>
+							</table>
+							<section id="RCP_IGD">
+										<div class="IGD_box"></div>
+										<div class="RCPigdform_add" ></div>
+										<div id="IGD_box_add"></div>
+							</section>
+							<div class="addNew_instru"></div>
+							<table class="input-table">
+								<tbody id="RCPinstruform" class="data">		
+								</tbody>
+							</table>
+							<table class="input-table">
+								<tbody id="RCPinstruform_add" class="data">		
+								</tbody>
+							</table>
+						</section>
+						
+					</div>
+		
+		<br><br>
+		<div class="status"></div>
+		
+	</div>
+<script type="text/javascript">
+		function clearStatus() {
+			$('.status').html('');
+		}
+			
+		var API_URL = "http://127.0.0.1:49000/api/UrKitchen/Recipe/";
+		
+//開始時，先把資料讀取進來
+		$(document).ready(function () {
+			SearchRCP("all" ,"RecipeID","asc");
+		});
+
+//Search table value			
+		function SearchRCP(R_keyword, order, sort) {
+        	$("#RCPform tr").remove();
+			$("#RCPinstruform tr").remove();
+			$("#RCPinstruform_add tr").remove();
+			clearStatus();
+			var input = $("input[name='R_keyword']").val();
+			var o = $( "#R_order option:selected" ).val();
+			var s = $( "#R_sort option:selected" ).val();
+			
+			if(R_keyword==undefined){
+				R_keyword = input,
+				order = o;
+				sort = s;
+			}
+				
+		
+
+			//利用Get方式取得。
+			$.getJSON(API_URL+R_keyword+"/"+order+"/"+sort,
+				function (data) {
+					$("#RCPitems tr").remove();
+					for (i = 0; i < data.length; i++) {
+						var item_input= "item_input"+data[i].itemID;
+						var info_input= "info_input"+data[i].itemID;
+
+						$("#RCPitems").append('<tr>' +
+									  '<td>' + data[i].RecipeID + '</td>' +
+								      '<td>' + data[i].RecipeTitle + '</td>' +
+									  '<td>' + data[i].RecipeInfo + '</td>' +
+									  '<td>' + data[i].CreateDate + '</td>' +
+									  '<td>' + data[i].Author + '</td>' +
+								      '<td>' + data[i].AdminID + '</td>' +
+								      '<td>' + data[i].UserID + '</td>' +
+									  '<td>' + data[i].ViewTimes + '</td>' +
+									  '<td>' + data[i].DietTypeID + '</td>' +
+									  '<td>' + data[i].CuisineID + '</td>' +
+									  '<td><input type="button" value="Edit" onclick="ShowEditRCP('+ data[i].RecipeID +');"/></td>' +'<td><input width="100%" type="button" value="Delete" onclick="deleteRCP('+ data[i].RecipeID +');"/></td>' +
+									  '</tr>');
+						
+					}
+				})
+				.fail(
+					function (xhr, textStatus, err) {
+						$('#status').html('Error: ' + err);
+				});
+			
+			
+		}
+			
+	
+	
+	
+//Edit Recipe value
+		function EditRCP(ID){
+ 		
+			var RCPupdate = JSON.stringify({ 
+			RecipeID: ID,
+			RecipeTitle: $("#RecipeTitle").val(),
+			RecipeInfo: $('textarea#RecipeInfo').val(),
+			MainImage: $("#MainImage").val(),
+			ViewTimes: $('#ViewTimes').val(),
+			DietTypeID: $('#DietType').val(),
+			CuisineID: $('#Cuisine').val(),
+			PerServeing_For: $('#PerServeing_For').val(),
+			CookingTime: $('#CookingTime').val()
+			});
+			
+			
+			
+			$.ajax({
+				url: API_URL+ID,
+				cache: false,
+				type: 'PUT',
+				contentType: 'application/json; charset=utf-8',
+				data: RCPupdate, 
+				statusCode: {
+					201 /*Created*/: function (data) {
+						SearchRCP("all", "RecipeID","asc");
+						ShowEditRCP(ID);
+					}
+				}
+			});
+		}	
+	
+	
+//Edit Instrction value
+		function EditRCP_Instru(IID, RecipeID){
+			var RID = RecipeID;
+			var StepNo = "#StepNo"+IID;
+			var Instruction = "textarea#Instruction"+IID;
+			var instructionPic = "#instructionPic"+IID;
+ 		
+			var RCPinstru_update = JSON.stringify({ 
+			StepNo: $(StepNo).val(),
+			Instruction: $(Instruction).val(),
+			instructionPic: $(instructionPic).val()
+			});
+			
+			
+			
+			$.ajax({
+				url: API_URL+"Instru/"+IID,
+				cache: false,
+				type: 'PUT',
+				contentType: 'application/json; charset=utf-8',
+				data: RCPinstru_update, 
+				statusCode: {
+					201 /*Created*/: function (data) {
+						ShowEditRCP(RID);
+					}
+				}
+			});
+		}	
+			
+
+	
+	
+//Delete Recipe row
+		function deleteRCP(ID){
+ 			var r = confirm("Are you sure to delete Recipe");
+  			if (r == true){					
+				$.ajax({
+					url: API_URL+ID,
+					cache: false,
+					type: 'DELETE',
+					contentType: 'application/json; charset=utf-8',
+					//data: , 
+					statusCode: {
+						201 /*Created*/: function (data) {
+							SearchRCP("all", "RecipeID","asc");
+						}
+					}
+				});
+			}
+		}
+	
+	
+//Delete Recipe Instrction Step
+		function DeleteRCP_instru(ID,RecipeID){
+			var RID = RecipeID;	
+			
+			
+			
+							
+				$.ajax({
+					url: API_URL+"Instru/"+ID,
+					cache: false,
+					type: 'DELETE',
+					contentType: 'application/json; charset=utf-8',
+					//data: , 
+					statusCode: {
+						201 /*Created*/: function (data) {
+							ShowEditRCP(RID);
+						}
+					}
+				});
+		
+		}
+
+	
+			
+
+//Check input value			
+		function requiredRCPform(Recipe, FoodTypeID, Amount, Unit, UnitAprox,CaloriesPerServing){
+			
+			if (Recipe == ""||FoodTypeID==""||Amount==""||Unit==""||UnitAprox==""||CaloriesPerServing==""){
+				alert("Please input all fields");
+				return false;
+			}	
+			
+			else{
+				alert('Code has accepted : you can try another');
+				return true; 
+			}
+		}
+			
+			
+//Show edit table
+		function ShowEditRCP(ID){
+			clearStatus();	
+			var RID = ID;
+			$("#RCPinstruform_add tr").remove();
+			$(".addNew_instru .addNew").remove();
+			
+			$.getJSON(API_URL+ID, 
+			function(data) {
+				$("#RCPform tr").remove();
+				for (i = 0; i < data.length; i++) {
+					$("#RCPform").append(	
+						'<tr>'+
+						  '<th scope="col">Edit Recipe</th>'+
+						  '<th scope="col">&nbsp;</th>'+
+						'</tr>'+
+						'<tr>'+
+						  '<td>Recipe ID:</td>'+
+						  '<td id="RID">'+data[i].RecipeID+'</td>'+
+						'</tr>'+
+						'<tr>'+
+						  '<td>Recipe Title:</td>'+
+						  '<td><input type="text" id="RecipeTitle" name="RecipeTitle" value="'+data[i].RecipeTitle+'"/></td>'+
+						'</tr>'+
+						'<tr>'+
+						  '<td>Recipe Info:</td>'+
+						  '<td><textarea id="RecipeInfo" name="RecipeInfo" rows="4" cols="50" value="">'+data[i].RecipeInfo+'</textarea></td>'+
+						'</tr>'+
+						'<tr>'+
+						  '<td>Main Image:</td>'+
+						  '<td><input type="text" id="MainImage" name="MainImage" value="'+data[i].MainImage+'"/></td>'+
+						'</tr>'+
+						'<tr>'+
+						'<tr>'+
+						  '<td>CreateDate:</td>'+
+						  '<td>'+data[i].CreateDate+'</td>'+
+						'</tr>'+
+						'<tr>'+
+						  '<td>Author:</td>'+
+						  '<td>'+data[i].Author+'</td>'+
+						'</tr>'+
+						'<tr>'+
+						 '<td>View Times:</td>'+
+						  '<td><input type="number" max="999999" min="0" id="ViewTimes" name="ViewTimes" value="'+data[i].ViewTimes+'"/></td>'+
+						'</tr>'+
+						'<tr>'+
+						'<td>Diet Type:</td>'+
+						  '<td><input type="text" id="DietType" name="DietType" value="'+data[i].DietTypeID+'"/></td>'+
+						'</tr>'+
+						'<tr>'+
+						'<td>Cuisine:</td>'+
+						  '<td><input type="text" id="Cuisine" name="Cuisine" value="'+data[i].CuisineID+'"/></td>'+
+						'</tr>'+
+						'<tr>'+
+						 '<td>Per Serving for:</td>'+
+						  '<td><input type="number" max="10" min="1" id="PerServeing_For" name="PerServeing_For" value="'+data[i].PerServeing_For+'"/></td>'+
+						'</tr>'+
+						'<tr>'+
+						 '<td>Cooking Time:</td>'+
+						  '<td><input type="number" max="999" min="0" id="CookingTime" name="CookingTime" value="'+data[i].CookingTime+'"/></td>'+
+						'</tr>'+
+						'<tr>'+
+						 '<td></td>'+
+						  '<td><input type="button" value="Edit" onclick="EditRCP('+RID+');"/></td>'+
+						'</tr>'
+					);
+				}
+			})
+			.fail(
+					function (xhr, textStatus, err) {
+						$('#status').html('Error: ' + err);
+			});
+			//get recipe JSON end
+			
+			$.getJSON(API_URL+ID+"/Instru", 
+			function(data) {
+				$("#RCPinstruform tr").remove();
+				if(data.length==0){
+												
+						$(".addNew_instru").append(
+						'<div class="addNew">'+
+						   '<input type="button" class="block" value="Add new Step" onclick="showAddRCP_instru('+data.length+','+RID+');"/>'+
+						'</div>'
+						);
+					
+					}
+				
+				
+				for (i = 0; i < data.length; i++) {
+					
+					if(i==0){
+						$("#RCPinstruform").append(	
+						'<tr>'+
+						  '<th scope="col">Edit Recipe Instruction</th>'+
+						  '<th scope="col">&nbsp;</th>'+
+						'</tr>'						
+						);
+					}
+					$("#RCPinstruform").append(	
+						'<tr>'+
+						  '<th scope="col">Step</th>'+
+						  '<th scope="col">&nbsp;</th>'+
+						'</tr>'+
+						'<tr>'+
+						  '<td>Step No:</td>'+
+						  '<td><input type="number" max="99" min="1" id="StepNo'+data[i].InstructionID+'" name="StepNo" value="'+data[i].StepNo+'"/></td>'+
+						'</tr>'+
+						'<tr>'+
+						  '<td>Instruction:</td>'+
+						  '<td><textarea id="Instruction'+data[i].InstructionID+'" name="Instruction" rows="6" cols="90" value="">'+data[i].Instruction+'</textarea></td>'+
+						'</tr>'+
+						'<tr>'+
+						'<td>Instruction Pic:</td>'+
+						  '<td><input type="text" id="instructionPic'+data[i].InstructionID+'" name="instructionPic" value="'+data[i].instructionPic+'"/></td>'+
+						'</tr>'+
+						'<tr>'+
+						 '<td></td>'+
+						  '<td><input type="button" value="Edit Step '+data[i].StepNo+'" onclick="EditRCP_Instru('+data[i].InstructionID+","+RID+');"/>'+
+						'<input type="button" value="Delete Step '+data[i].StepNo+'" onclick="DeleteRCP_instru('+data[i].InstructionID+","+RID+');"/></td>'+
+						'</tr>'
+					);
+					if(i==data.length-1){
+						$("#RCPinstruform").append(	
+						'<tr id="addNew">'+
+						  '<td></td>'+
+						  '<td><input type="button" class="block" value="Add new Step" onclick="showAddRCP_instru('+data.length+','+RID+');"/></td>'+
+						'</tr>'					
+						);
+					}
+					
+				}
+			})//getJson
+			.fail(
+					function (xhr, textStatus, err) {
+						$('#status').html('Error: ' + err);
+			});
+			
+			showEditRCP_IGD(RID);
+			
+		}
+
+	
+//Show Add table	
+		function showAddRCP_instru(dataLength,RID){
+			clearStatus();	
+			var StepNo=dataLength+1;
+			var ID = RID;
+			var StepNo_new = "StepNo_"+RID;
+			var Instruction_new = "Instruction_"+RID;
+			var instructionPic_new = "instructionPic_"+RID;
+			
+			$("#RCPinstruform_add tr").remove();
+
+			$("#RCPinstruform_add").append(	
+				'<tr>'+
+				  '<th scope="col">Step</th>'+
+				  '<th scope="col">&nbsp;</th>'+
+				'</tr>'+
+				'<tr>'+
+				  '<td>Step No:</td>'+
+				  '<td><input type="number" max="99" min="1" id="'+StepNo_new+'" value="'+StepNo+'"/></td>'+
+				'</tr>'+
+				'<tr>'+
+				  '<td>Instruction:</td>'+
+				  '<td><textarea id="'+Instruction_new+'" rows="6" cols="90" value="">Instruction</textarea></td>'+
+				'</tr>'+
+				'<tr>'+
+				'<td>Instruction Pic:</td>'+
+				  '<td><input type="text" id="'+instructionPic_new+'" name="instructionPic" value=" "/></td>'+
+				'</tr>'+
+				'<tr>'+
+				 '<td></td>'+
+				  '<td><input type="button" value="Add Step '+StepNo+'" onclick="AddRCP_Instru('+ID+');"/>'+
+				'<input type="button" value="Calcel" onclick="CancelAddRCP_instru();"/></td>'+
+				'</tr>'
+			);
+			
+		}
+	
+	
+//Add Recipe Instruction Row
+		function AddRCP_Instru(RID){
+			$(".addNew_instru .addNew").remove();
+			var StepNo_new = "#StepNo_"+RID;
+			var Instruction_new = "textarea#Instruction_"+RID;
+			var instructionPic_new = "#instructionPic_"+RID;
+ 		
+			var RCP_instrudata = JSON.stringify({ 
+			
+			StepNo: $(StepNo_new).val(),
+			Instruction: $(Instruction_new).val(),
+			instructionPic: $(instructionPic_new).val()
+			});
+			
+			
+			
+			$.ajax({
+				url: API_URL+"Instru/Create/"+RID,
+				cache: false,
+				type: 'POST',
+				contentType: 'application/json; charset=utf-8',
+				data: RCP_instrudata, 
+				statusCode: {
+					201 /*Created*/: function (data) {
+						
+						ShowEditRCP(RID);
+					}
+				}
+			});
+		}	
+	
+	
+</script>
+
+	
+</body>
+</html>

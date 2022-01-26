@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Document</title>
+	<link rel="stylesheet" href="Recipe.css">
+	<script type="text/javascript" src="EditIngredient.js"></script> 
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js">
+		
+		
+		function createCORSRequest(method, url) {
+		  var xhr = new XMLHttpRequest();
+		  if ("withCredentials" in xhr) {
+
+			// Check if the XMLHttpRequest object has a "withCredentials" property.
+			// "withCredentials" only exists on XMLHTTPRequest2 objects.
+			xhr.open(method, url, true);
+
+		  } else if (typeof XDomainRequest != "undefined") {
+
+			// Otherwise, check if XDomainRequest.
+			// XDomainRequest only exists in IE, and is IE's way of making CORS requests.
+			xhr = new XDomainRequest();
+			xhr.open(method, url);
+
+		  } else {
+
+			// Otherwise, CORS is not supported by the browser.
+			xhr = null;
+
+		  }
+		  return xhr;
+			}
+
+			var xhr = createCORSRequest('GET', url);
+			if (!xhr) {
+			  throw new Error('CORS not supported');
+			}
+	</script>
+</head>
+
+<body>
+	<section id="RCP_IGD">
+		<div class="IGD_box">
+		</div>
+		<input type="button" class="IGD-button" value="Add new Step" onclick="showEditIGD();"/>
+		<input type="button" class="IGD-button" value="Add new Step" onclick="showAddRCP_IGD();"/>
+		
+	</section>
+
+
+
+
+</body>
+</html>

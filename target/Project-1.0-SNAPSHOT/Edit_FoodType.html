@@ -1,0 +1,216 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Edit_FoodType</title>
+<link rel="stylesheet" href="Admin.css">
+</head>
+
+<body>
+	<div class="pp1"><br>
+					<form>
+						<table class="input-table">
+						<tbody>
+							<tr>
+							  <td>Keyword:</td>
+							  <td><input type="text" id="keyword"/></td></tr>
+							<tr>
+							  <td> </td>
+							  <td><input type="button" value="Search" onclick="SearchFT();"/></td>
+							</tr>
+						  </tbody>
+						</table>
+					</form><br>
+					<!--Result-->	
+					<div id="Result">
+						<section class="content-wrapper main-content">
+							<h4>FoodType data</h4>
+							<table>
+								<thead>
+									<tr>
+										<th>FoodType ID</th>
+										<th>Unique Name</th>
+										<th>FoodType</th>
+										<th>Information</th>
+										<th>Edit</th>
+									</tr>
+								</thead>
+								<tbody id="FTitems" class="data">
+								</tbody>
+												
+								<tbody id="Add" class="data">
+									<tr><td></td></tr>
+									<tr> 
+									  <td> New </td>
+									  <td>  </td>
+									  <td><input type="text" id="addFTItem" value="Please Enter New item..."/></td>
+									  <td><input type="text" id="addFTInfo" value="Please Enter Information..."/></td>
+									  <td><input type="button" value="Add New" onclick="AddFT();"/></td> 
+									</tr>
+								</tbody>
+							</table>
+						</section>
+						<div id="status"></div>
+					</div>
+		<script type="text/javascript">``
+		function clearStatus() {
+			$('#status').html('');
+		}
+			
+		var API_URL = "http://127.0.0.1:49000/api/UrKitchen/admin/FoodType/";
+		
+		//開始時，先把資料讀取進來
+		$(document).ready(function () {
+			SearchFT("all");
+		});
+
+//Search table value			
+		function SearchFT(keyword) {
+        
+			clearStatus();
+			var input = $('#keyword').val();	
+			
+			if(keyword==undefined){
+				keyword = input;
+			}
+				
+		
+
+				//利用Get方式取得。
+				$.getJSON(API_URL+keyword,
+				function (data) {
+					$("#FTitems tr").remove();
+					for (i = 0; i < data.length; i++) {
+						var item_input= "item_input"+data[i].itemID;
+						var info_input= "info_input"+data[i].itemID;
+
+						$("#FTitems").append('<tr>' +
+									  '<td>' + data[i].itemID + '</td>' +
+								      '<td>' + data[i].Uniq_name + '</td>' +
+									  '<td><input type="text" id="'+item_input+'" value="'+data[i].item+'"/></td>' +
+									  '<td><input type="text" id="'+info_input+'" value="'+data[i].Information+'"/></td>' +
+									  '<td><input type="button" value="Edit" onclick="EditFT('+ data[i].itemID +');"/></td>' +
+									  '</tr>');
+						if(keyword=="all"){
+							if(i==data.length-1){
+								$("#FTitems").append('<tr>' +
+									  '<td></td><td></td><td></td><td></td>'+
+									  '<td><input width="100%" type="button" value="Delete Last" onclick="deleteLastFT('+ data[i].itemID +');"/></td>' +
+									  '</tr>');
+							}
+						}
+					}
+				})
+				.fail(
+					function (xhr, textStatus, err) {
+						$('#status').html('Error: ' + err);
+					});
+			
+			
+		}
+			
+		
+//Edit table value
+		function EditFT(ID){
+ 		
+		
+			var item_input_ID = "#item_input"+ID;  
+			var info_input_ID = "#info_input"+ID;
+
+			var itemName= $(item_input_ID).val();
+			var info= $(info_input_ID).val();
+
+			required(itemName, info);
+
+			var EditFT = JSON.stringify({  
+
+				itemID: ID,
+				item: $(item_input_ID).val(),
+				Information: $(info_input_ID).val()
+			});
+
+			$.ajax({
+				url: API_URL+ID,
+				cache: false,
+				type: 'PUT',
+				contentType: 'application/json; charset=utf-8',
+				data:EditFT, 
+				statusCode: {
+					201 /*Created*/: function (data) {
+						SearchFT(ID);
+					}
+				}
+			});
+		}	
+			
+
+//Add new Row
+		function AddFT(){
+ 							
+			var itemName= $('#addFTItem').val();
+			var info= $('#addFTInfo').val();
+
+			required(itemName, info);
+
+			var addFT = JSON.stringify({  
+				item: itemName,
+				Information: info
+			});
+
+			$.ajax({
+				url: API_URL+"/Create",
+				cache: false,
+				type: 'POST',
+				contentType: 'application/json; charset=utf-8',
+				data:  addFT , 
+				statusCode: {
+					201 /*Created*/: function (data) {
+						SearchFT("all");
+					}
+				}
+			});
+		}
+
+			
+//Delete Last Row
+		function deleteLastFT(ID){
+ 							
+			$.ajax({
+				url: API_URL+ID,
+				cache: false,
+				type: 'DELETE',
+				contentType: 'application/json; charset=utf-8',
+				//data: , 
+				statusCode: {
+					201 /*Created*/: function (data) {
+						SearchFT("all");
+					}
+				}
+			});
+		}
+
+			
+
+//Check input value			
+		function required(item,info){
+			if (item === ""){
+				alert("Please input FoodType Value");
+				return false;
+			}	
+			else if (info === ""){
+				alert("Please input Information Value");
+				return false;
+			}
+			else{
+				alert('Code has accepted : you can try another');
+				return true; 
+			}
+		}
+			
+			
+		
+	</script>
+
+	</div>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>UrTable</title>
+<link rel="stylesheet" href="Main-page.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>	
+<script type="text/javascript" src="Recipe.js"></script>  
+</head>
+
+<body>
+	<h1 class="Head1">Ur Table</h1>
+	<section id="Urtable">
+		<h2 class="dish-Head2">Ur Recipes</h2>
+		<div id="dish">
+			<div class="table-recipe">
+						<div class="recipe_title dish">Title</div>
+						<div class="recipe_image" style="background-image: url('image/test.jpg');"></div>
+						<button type="button" width="150px">Delete</button>
+			</div>
+			
+		</div>
+		
+	</section>
+	<div class="margin" >
+	</div>
+	<script>
+		$( document ).ready(function() {
+			var UserID=$("#account").text();
+			showUrtableRCP(UserID);
+		});
+	</script>
+	 
+</body>
+</html>
