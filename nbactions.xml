@@ -20,4 +20,11 @@
                 <netbeans.deploy.clientUrlPart>${webpagePath}</netbeans.deploy.clientUrlPart>
             </properties>
         </action>
+        <action>
+            <actionName>CUSTOM-Run jetty</actionName>
+            <displayName>Run jetty</displayName>
+            <goals>
+                <goal>jetty:run</goal>
+            </goals>
+        </action>
     </actions>
